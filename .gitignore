@@ -1,0 +1,7 @@
+node_modules/
+.sites-runtime/
+.wrangler/
+dist/
+
+upload/
+attachments/

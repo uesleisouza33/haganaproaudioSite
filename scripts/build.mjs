@@ -1,0 +1,10 @@
+import {readFile,writeFile,mkdir,cp,rm} from 'node:fs/promises';
+await rm('dist',{recursive:true,force:true});await mkdir('dist/server',{recursive:true});await mkdir('dist/.openai',{recursive:true});
+const routes={'/':['index.html','text/html;charset=utf-8'],'/admin':['admin.html','text/html;charset=utf-8'],'/admin.js':['admin.js','text/javascript;charset=utf-8'],'/catalog.js':['catalog.js','text/javascript;charset=utf-8'],'/catalog.css':['catalog.css','text/css;charset=utf-8'],'/model-viewer.min.js':['node_modules/@google/model-viewer/dist/model-viewer.min.js','text/javascript;charset=utf-8']};
+const files={};for(const [route,[file,mime]]of Object.entries(routes))files[route]=[await readFile(file,'utf8'),mime];
+files['/logo.png']=[(await readFile('assets/hagana-logo.png')).toString('base64'),'image/png'];
+const api=(await readFile('worker/api.js','utf8')).replace(/export /g,'');
+const seo=(await readFile('worker/seo.js','utf8')).replace(/export /g,'');
+const worker=(await readFile('worker/index.js','utf8')).replace(/^import .*;\n/gm,'');
+await writeFile('dist/server/index.js','const files='+JSON.stringify(files)+';\n'+api+'\n'+seo+'\n'+worker);
+await cp('.openai/hosting.json','dist/.openai/hosting.json');await cp('drizzle','dist/.openai/drizzle',{recursive:true});console.log('Worker, catalog assets and migrations built.');

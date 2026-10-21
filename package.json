@@ -1,0 +1,1 @@
+{"name":"hagana-catalog","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","db:generate":"drizzle-kit generate"},"dependencies":{"@google/model-viewer":"4.1.0","drizzle-orm":"0.44.5"},"devDependencies":{"drizzle-kit":"0.31.4","miniflare":"4.20250917.0"}}
